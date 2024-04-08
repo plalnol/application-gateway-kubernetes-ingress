@@ -1,4 +1,5 @@
 # This file contains the essential configs for the ingress controller helm chart
+# Full step by step instruction available here: docs/how-tos/deploy-AGIC-with-Workload-Identity-using-helm.md
 
 # Verbosity level of the App Gateway Ingress Controller
 verbosityLevel: 3
@@ -29,17 +30,24 @@ appgw:
 ################################################################################
 # Specify the authentication with Azure Resource Manager
 #
-# Two authentication methods are available:
-# - Option 1: AAD-Pod-Identity (https://github.com/Azure/aad-pod-identity)
+# Three authentication methods are available:
+
+#Option 1: Azure workload Identity
 armAuth:
-    type: aadPodIdentity
-    identityResourceID: <identityResourceId>
+    type: workloadIdentity
     identityClientID:  <identityClientId>
 
 ## Alternatively you can use Service Principal credentials
 # armAuth:
 #    type: servicePrincipal
 #    secretJSON: <<Generate this value with: "az ad sp create-for-rbac --subscription <subscription-uuid> --sdk-auth | base64 -w0" >>
+
+# - Option 3: - DEPRECTED - AAD-Pod-Identity (https://github.com/Azure/aad-pod-identity)
+#armAuth:
+#    type: aadPodIdentity
+#    identityResourceID: <identityResourceId>
+#    identityClientID:  <identityClientId>
+
 
 ################################################################################
 # Specify if the cluster is RBAC enabled or not
